@@ -196,58 +196,18 @@ window.startQuiz = function () {
 };
 
 
-function loadQuestion() {
-  const quizElement = document.getElementById("quiz");
-  const currentSet = questionSets[userData.assignedSet];
-  const currentQuestion = currentSet[currentQuestionIndex];
+    function loadQuestion() {
+      const quizElement = document.getElementById("quiz");
+      const currentSet = questionSets[userData.assignedSet];
+      const currentQuestion = currentSet[currentQuestionIndex];
 
-  quizElement.innerHTML = `
-    <h3>${currentQuestion.question}</h3>
-    ${currentQuestion.options
-      .map((option, index) => `<button onclick="selectOption(${index})">${option}</button>`)
-      .join('')}
-  `;
-}
-
-window.selectOption = function (index) {
-  const currentSet = questionSets[userData.assignedSet];
-  const currentQuestion = currentSet[currentQuestionIndex];
-
-  // Store the user's response
-  userData.responses[currentQuestionIndex] = index;
-
-  // Check if the selected option is correct
-  if (index === currentQuestion.answer) {
-    userData.score++;
-  }
-
-  // Move to the next question
-  currentQuestionIndex++;
-
-  // If there are more questions, load the next one
-  if (currentQuestionIndex < currentSet.length) {
-    loadQuestion();
-  } else {
-    endQuiz();
-  }
-};
-
-function endQuiz() {
-  const quizContainer = document.getElementById("quiz-container");
-  quizContainer.innerHTML = `
-    <h2>Quiz Finished</h2>
-    <p>Your score is ${userData.score} out of ${questionSets[userData.assignedSet].length}.</p>
-    <button onclick="startNewQuiz()">Start New Quiz</button>
-  `;
-}
-
-function startNewQuiz() {
-  userData = { name: "", assignedSet: "", responses: [], score: 0 };
-  currentQuestionIndex = 0;
-  document.getElementById("user-form").classList.remove("hidden");
-  document.getElementById("quiz-container").classList.add("hidden");
-}
-
+      quizElement.innerHTML = `
+        <h3>${currentQuestion.question}</h3>
+        ${currentQuestion.options
+          .map((option, index) => `<button onclick="window.selectOption(${index})">${option}</button>`)
+          .join("")}
+      `;
+    }
 
     window.selectOption = function (selectedIndex) {
       userData.responses[currentQuestionIndex] = selectedIndex;
@@ -299,14 +259,6 @@ function startNewQuiz() {
       document.getElementById("result").textContent = `Thank you for participating! Your score is ${userData.score}.`;
       document.getElementById("result").classList.remove("hidden");
     };
-    function saveScore() {
-  const scoresRef = ref(db, 'scores/' + userData.name);
-  set(scoresRef, {
-    score: userData.score,
-    responses: userData.responses
-  });
-}
-
 
     loadScores();
   </script>
@@ -319,15 +271,15 @@ function startNewQuiz() {
     </div>
 
     <div id="user-form">
-        <label for="Roll number">Enter your Roll Number:</label>
-        <input type="text" id="Roll number" placeholder="e.g., 22xxxx">
-        <button onclick="startQuiz()">Start Quiz</button>
-      </div>
-      
-      <div id="quiz-container" class="hidden">
-        <div id="quiz"></div>
-      </div>
-      
+      <label for="username">Enter your name:</label>
+      <input type="text" id="username" placeholder="Your name">
+      <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div id="quiz-container" class="hidden">
+      <div id="quiz"></div>
+      <button onclick="nextQuestion()">Next</button>
+    </div>
 
     <div id="result" class="hidden"></div>
 
