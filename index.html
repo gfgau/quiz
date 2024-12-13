@@ -182,9 +182,9 @@
 }
 
 window.startQuiz = function () {
-  const username = document.getElementById("Roll number").value;
+  const username = document.getElementById("username").value;
   if (!username) {
-    alert("Please enter your university roll number.");
+    alert("Please enter your roll number.");
     return;
   }
 
@@ -272,7 +272,7 @@ window.startQuiz = function () {
 
     <div id="user-form">
       <label for="username">Enter your name:</label>
-      <input type="text" id="username" placeholder="Your name">
+      <input type="text" id="username" placeholder="Roll number">
       <button onclick="startQuiz()">Start Quiz</button>
     </div>
 
